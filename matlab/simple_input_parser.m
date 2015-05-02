@@ -1,6 +1,36 @@
 function default_struct = simple_input_parser( default_struct, raw_varargin, validators )
-%PARSE_VARARGIN2 Summary of this function goes here
-%   Detailed explanation goes here
+%SIMPLE_INPUT_PARSER is a varargin parser mechanism that provides a
+%convenient way to enchance your custom function parameter handling.
+%
+% To use this mechanism you only need to pass the varargin matlab
+% parameter passed to you function to the simple_input_parser function as 
+% well as the default parameter set. The default parameter set defines the
+% default values and in the other hand the type of the parmeters. Simple
+% Input Parser uses this type information for a simple type checking.
+% 
+% Detailed information can be found at https://github.com/tiborsimon/simple-input-parser
+%
+% The MIT License (MIT)
+% 
+% Copyright (c) 2015 Tibor Simon
+% 
+% Permission is hereby granted, free of charge, to any person obtaining a copy
+% of this software and associated documentation files (the "Software"), to deal
+% in the Software without restriction, including without limitation the rights
+% to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+% copies of the Software, and to permit persons to whom the Software is
+% furnished to do so, subject to the following conditions:
+% 
+% The above copyright notice and this permission notice shall be included in all
+% copies or substantial portions of the Software.
+% 
+% THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+% IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+% FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+% AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+% LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+% OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+% SOFTWARE.
 
 %% Customizable parameters
 
@@ -128,7 +158,13 @@ end
                         d = setdiff(key_list, returned);
                         key_list = remove_cell_from_array(key_list, d{1});
                         l = l-1;
-                        continue
+                        if length(parseable_keys) > 0
+                            continue
+                        else
+                            updated_key_list = key_list;
+                            truncated_parseable_keys = parseable_keys;
+                            break
+                        end
                     catch
                     end
                 end
@@ -252,5 +288,6 @@ end
         exception = MException(id, message);
         throw(exception)
     end
+
 end
 

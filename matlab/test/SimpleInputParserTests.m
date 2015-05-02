@@ -223,6 +223,19 @@ classdef SimpleInputParserTests < matlab.unittest.TestCase
             testCase.verifyEqual(expected, result);
         end
         
+        function test_BulkMode_ParseAmbiguousKeyAtTheEndofTheKeyString(testCase)
+            data.a = 1;
+            data.aa = 1;
+            
+            raw_varargin = {'aa', 3};
+            
+            expected.a = 1;
+            expected.aa = 3;
+            
+            result = simple_input_parser(data, raw_varargin);
+            testCase.verifyEqual(expected, result);
+        end
+        
         function test_BulkMode_KeyError(testCase)
             data.a = 1;
             data.b = 1;
