@@ -4,7 +4,7 @@
 
 Easy to use variable lenght input parser mechanism that provides a convenient way to enchance your custom function parameter handling.
 
-The current version sports a MATLAB implementation, but other language ports are coming too.
+The current version sports a _MATLAB_ implementation, but other language ports are coming too.
 
 ### Features
 
@@ -188,6 +188,22 @@ end
 If you want to contribute to this project you have to make sure, that your contribution don't violates the test harness located in the `test` folder of each port.
 
 If a pull request fails any of the tests, the request will be automatically invalidated.
+
+The current _MATLAB_ port contains 30 tests:
+
+```
+Running SimpleInputParserTests
+..........
+..........
+..........
+Done SimpleInputParserTests
+__________
+
+                 result              
+    _________________________________
+
+    [1x30 matlab.unittest.TestResult]
+```
 
 ## License
 
