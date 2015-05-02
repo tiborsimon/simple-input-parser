@@ -4,6 +4,8 @@
 
 Easy to use variable lenght input parser mechanism that provides a convenient way to enchance your custom function parameter handling.
 
+The current version sports a MATLAB implementation, but other language ports are coming too.
+
 ### Features
 
 - Arbitrary parameter order
@@ -180,6 +182,12 @@ function ret = my_function( varargin )
 
 end
 ```
+
+## Contribution
+
+If you want to contribute to this project you have to make sure, that your contribution don't violates the test harness located in the `test` folder of each port.
+
+If a pull request fails any of the tests, the request will be automatically invalidated.
 
 ## License
 
