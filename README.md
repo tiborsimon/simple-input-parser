@@ -1,6 +1,6 @@
 # Simple Input Parser
 
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tiborsimon/simple-input-parser-for-matlab?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+<a href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank"><img src="http://tiborsimon.github.io/images/corresponding-article.png" /></a>   <a href="http://tiborsimon.github.io/programming/simple-input-parser#discussion" target="_blank"><img src="http://tiborsimon.github.io/images/join-to-the-discussion.png" /></a>   <a href="http://tiborsimon.github.io/programming/simple-input-parser#demo" target="_blank"><img src="http://tiborsimon.github.io/images/live-demo.png" /></a>
 
 Easy to use variable lenght input parser mechanism that provides a convenient way to enchance your custom function parameter handling.
 
