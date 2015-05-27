@@ -4,7 +4,7 @@ Easy to use variable lenght input parser mechanism that provides a convenient wa
 
 The current version sports a _MATLAB_ implementation, but other language ports are coming too.
 
-<a href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank"><img src="http://tiborsimon.github.io/images/corresponding-article.png" /></a>   <a href="http://tiborsimon.github.io/programming/simple-input-parser#discussion" target="_blank"><img src="http://tiborsimon.github.io/images/join-to-the-discussion.png" /></a>
+<a href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank"><img src="http://tiborsimon.github.io/images/core/corresponding-article.png" /></a>   <a href="http://tiborsimon.github.io/programming/simple-input-parser#discussion" target="_blank"><img src="http://tiborsimon.github.io/images/core/join-to-the-discussion.png" /></a>
 
 ### Features
 
