@@ -1,7 +1,5 @@
 # Simple Input Parser
 
-<a href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank"><img src="http://tiborsimon.github.io/images/corresponding-article.png" /></a>   <a href="http://tiborsimon.github.io/programming/simple-input-parser#discussion" target="_blank"><img src="http://tiborsimon.github.io/images/join-to-the-discussion.png" /></a>   <a href="http://tiborsimon.github.io/programming/simple-input-parser#demo" target="_blank"><img src="http://tiborsimon.github.io/images/live-demo.png" /></a>
-
 Easy to use variable lenght input parser mechanism that provides a convenient way to enchance your custom function parameter handling.
 
 The current version sports a _MATLAB_ implementation, but other language ports are coming too.
@@ -16,6 +14,8 @@ The current version sports a _MATLAB_ implementation, but other language ports a
 - Compact yet clear parameter passing
 - Parameter validation by type
 - Custom validator functions
+
+<a href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank"><img src="http://tiborsimon.github.io/images/corresponding-article.png" /></a>   <a href="http://tiborsimon.github.io/programming/simple-input-parser#discussion" target="_blank"><img src="http://tiborsimon.github.io/images/join-to-the-discussion.png" /></a>
 
 #### Old way to call a function
 
