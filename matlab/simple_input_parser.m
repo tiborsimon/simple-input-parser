@@ -272,8 +272,9 @@ end
     function validate_value_for_key(key, value)
         if size(validators,2) ~= 0
             if isfield(validators, key)
-                if ~validators.(key)(value)
-                    throw_exception('validationError', ['Invalid value was found for the key "', key, '" according to the given validator function: ', evalc('disp(value)')]);
+                [validflag, errormsg] = validators.(key)(value);
+                if ~validflag
+                    throw_exception('validationError', ['Invalid value was found for the key "', key, '" according to the given validator function: ', evalc('disp(value)'), ' ', evalc('disp(errormsg)')]);
                 end
             end
         end
