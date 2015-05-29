@@ -170,9 +170,9 @@ function ret = my_function( varargin )
     flags.b = 0;
     flags.c = 0;
 
-    validator.b = @validate_c()
+    validators.b = @validate_c()
 
-    flags = simple_input_parser(flags, varargin);
+    flags = simple_input_parser(flags, varargin, validators);
 
     function valid = validate_c(value)
         % validation logic
