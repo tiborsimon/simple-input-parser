@@ -1,6 +1,6 @@
 # Simple Input Parser
 
-Easy to use variable lenght input parser mechanism that provides a convenient way to enchance your custom function parameter handling.
+Easy to use variable lenght input parser mechanism that provides a convenient and advanced way to enchance your custom function parameter handling.
 
 The current version sports a _MATLAB_ implementation, but other language ports are coming too.
 
@@ -16,7 +16,7 @@ The current version sports a _MATLAB_ implementation, but other language ports a
    - Extra flag mode
 - Compact yet clear parameter passing
 - Parameter validation by type
-- Custom validator functions
+- Custom validator functions with custom error messages
 
 #### Old way to call a function
 
@@ -35,7 +35,7 @@ What if you could provide an on-line help for your users during reading and usin
 ```
 ssin('f', 440, 'A', 2, 'phi', 45, 'fs', 48e3, 'L', 0.8)
 ```
-Much better and readable way to call a function. Everyone knows what is happening exactly. 
+Much better and readable way to call a function. Everyone knows exactly what is happening. 
 
 But do you really need to force your users to remember your parameter order that is probably inconvenient for them? 
 
@@ -71,6 +71,10 @@ Yes, this is the most compact form of a function call with __Simple Input Parser
 
 There is an even shorter form that is called _Flag mode_ which receives only the keys and returns a boolean array based on the keys the user passes in.
 
+And here comes the best part:
+
+#### Simple Input Parser supports all its modes simultaneously by calling only one API function inside your function!
+
 
 Don't hesitate to try it out.
 
@@ -101,7 +105,7 @@ By declaring a default data array you have done two things at once:
 - defining the names of the parameters
 - defining it's type
 
-This is enough information for __SImple Input Parser__ to parse the given input, and during the parsing, executing a simple type checking.
+This is enough information for __Simple Input Parser__ to parse the given input, and during the parsing, executing a simple type checking.
 
 The `simple_input_parser()` function returns the parameter array with the updated values in it.
 
