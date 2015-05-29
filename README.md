@@ -105,9 +105,9 @@ This is enough information for __SImple Input Parser__ to parse the given input,
 
 The `simple_input_parser()` function returns the parameter array with the updated values in it.
 
----
+#### What has just happened?
 
-Inside the parsing function three things is happening:
+Inside the parsing function three things are happening:
 
 - mode selection
 - parsing
