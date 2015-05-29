@@ -326,6 +326,65 @@ classdef SimpleInputParserTests < matlab.unittest.TestCase
             testCase.verifyWarning(@() simple_input_parser(data, raw_varargin), '')
         end
         
+%% Extended Flag Mode
+        function test_ExtendedFlagMode_BasicFunctionality(testCase)
+            data.a = 0;
+            
+            raw_varargin = {'a',5};
+            
+            expected.a = 1;
+            
+            [val, result] = simple_input_parser(data, raw_varargin);
+            testCase.verifyEqual(result, expected);
+        end
+        
+        function test_ExtendedFlagMode_FirstAndLastKeys(testCase)
+            data.a = 0;
+            data.b = 0;
+            data.c = 0;
+            
+            raw_varargin = {'a',5,'c',3};
+            
+            expected.a = 1;
+            expected.b = 0;
+            expected.c = 1;
+            
+            [val, result] = simple_input_parser(data, raw_varargin);
+            testCase.verifyEqual(result, expected);
+        end
+        
+        function test_ExtendedFlagMode_BulkCompatibility(testCase)
+            data.a = 0;
+            data.b = 0;
+            data.c = 0;
+            
+            raw_varargin = {'ac',3,5};
+            
+            expected.a = 1;
+            expected.b = 0;
+            expected.c = 1;
+            
+            [val, result] = simple_input_parser(data, raw_varargin);
+            testCase.verifyEqual(result, expected);
+        end
+        
+        function test_ExtendedFlagMode_FlagModeCompatibility(testCase)
+            data.a = 0;
+            data.b = 0;
+            data.c = 0;
+            
+            raw_varargin = {'ac'};
+            
+            expected.a = 1;
+            expected.b = 0;
+            expected.c = 1;
+            
+            [val, result] = simple_input_parser(data, raw_varargin);
+            testCase.verifyEqual(result, expected);
+            testCase.verifyEqual(result, val);
+        end
+
+        
 %% Validator tests
         function test_Validator_BasicFunctionality_Passed(testCase)
             data.a = 'gg';
