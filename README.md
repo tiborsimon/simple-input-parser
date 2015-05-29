@@ -166,7 +166,9 @@ function ret = my_function( varargin )
 
     flags = simple_input_parser(flags, varargin{1});
     
-    % by passing just the first element of the varargin array we make sure that the Simple Input Parser uses the flag mode
+    % by passing just the first element of the varargin array we make sure that the 
+    % Simple Input Parser uses the flag mode
+    
     % further functionalities
 
 end
@@ -185,9 +187,10 @@ function ret = my_function( varargin )
 
     [params, flags] = simple_input_parser(flags, varargin);
     
-    % if a value was parsed, it's corresponding field in the flags structure will be assigned to one
-    % unlike the previous flag mode, it is not necessary to truncate the varargin parameter to it's firts element
-    % the flag generation will work during other modes as well
+    % if a value was parsed, it's corresponding field in the flags structure will 
+    % be assigned to one unlike the previous flag mode, it is not necessary to 
+    % truncate the varargin parameter to it's firts element the flag generation 
+    % will work during other modes as well
 
     % further functionalities
 
