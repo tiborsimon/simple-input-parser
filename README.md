@@ -13,6 +13,7 @@ The current version sports a _MATLAB_ implementation, but other language ports a
    - Key value pair mode
    - Bulk mode
    - Flag mode
+   - Extra flag mode
 - Compact yet clear parameter passing
 - Parameter validation by type
 - Custom validator functions
