@@ -80,9 +80,9 @@ Don't hesitate to try it out.
 
 # How to use it?
 
-__Simple Input Parser__ does all of the internal parsing based on a predefined parameter array you pass in during the parsing function call.
+__Simple Input Parser__ does all of the internal parsing based on a predefined parameter array you pass in during the parsing API function call.
 
-Let's say you are going to create a function that takes 3 parameters: a, b and c. Beside the functionality you need to
+Let's say you are going to create a function that takes 3 parameters: a, b and c. Beside your custom functionality you need to
 - pass the parameters in as a single varargin parameter
 - create a parameter array and set the default values
 - pass these two into the `simple_input_parser()` function
@@ -107,7 +107,7 @@ By declaring a default data array you have done two things at once:
 
 This is enough information for __Simple Input Parser__ to parse the given input, and during the parsing, executing a simple type checking.
 
-The `simple_input_parser()` function returns the parameter array with the updated values in it.
+The `simple_input_parser()` API function returns the parameter array with the updated values in it.
 
 #### What has just happened?
 
@@ -121,11 +121,11 @@ Based on the given inputs, __Simple Input Parser__ will determine it's mode of o
 
 ### Offered modes of operations
 
-__Simple Input Parser__ can work in three mode. The decision of which mode will be used is decided under the hood based on the provided parameters. You only need to call only one function that will handle the input parsing for you.
+__Simple Input Parser__ can work in four operation modes. The decision will be made under the hood based on the provided parameters. You only need to _call_ only _one API function_ that will handle the input parsing for you.
 
 #### Key value pair mode
 
-This mode is the longest to type for your users but it is also the most clearer mode of __Simple Input Parser__. You pass in a key, and then the appropriate value. It's that simple.
+This mode is the longest method to type for your users but it is also the most clearer one. You pass in a key, and then the appropriate value. It's that simple.
 
 ```
 ssin('A', 2, 'f', 440, 'L', 0.8, 'fs', 48e3, 'phi', 45)
@@ -134,12 +134,16 @@ ssin('A', 2, 'f', 440, 'L', 0.8, 'fs', 48e3, 'phi', 45)
 
 #### Bulk mode
 
-Bulk mode offers your users to pass in the keys at once, and than list the values in the given order. White spaces between the keys are optional. __Simple Input Parse__ can handle the keys without white spaces as well.
+Bulk mode allows your users to pass in the keys at once, and than list the values in the given order. White spaces between the keys are optional. __Simple Input Parse__ can handle the keys without white spaces as well.
 
 ```
 ssin('A f L fs phi', 2, 440, 0.8, 48e3, 45)
 ssin('AfLfsphi', 2, 440, 0.8, 48e3, 45)
 ```
+
+Aha, you may think that without spaces Simple Input Parser can be confused by passing ambiguous key names in it. Sadly, it can handle them happily :)
+
+
 
 #### Flag mode
 
