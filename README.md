@@ -147,8 +147,9 @@ function ret = my_function( varargin )
     flags.b = 0;
     flags.c = 0;
 
-    flags = simple_input_parser(flags, varargin);
-
+    flags = simple_input_parser(flags, varargin{1});
+    
+    % by passing just the first element of the varargin array we make sure that the Simple Input Parser uses the flag mode
     % further functionalities
 
 end
@@ -168,6 +169,8 @@ function ret = my_function( varargin )
     [params, flags] = simple_input_parser(flags, varargin);
     
     % if a value was parsed, it's corresponding field in the flags structure will be assigned to one
+    % unlike the previous flag mode, it is not necessary to truncate the varargin parameter to it's firts element
+    % the flag generation will work during other modes as well
 
     % further functionalities
 
@@ -188,13 +191,13 @@ The validator functions have to return a boolean value that determines if the va
 ``` matlab
 function ret = my_function( varargin )
 
-    flags.a = 0;
-    flags.b = 0;
-    flags.c = 0;
+    params.a = 0;
+    params.b = 0;
+    params.c = 0;
 
     validators.b = @validate_c()
 
-    flags = simple_input_parser(flags, varargin, validators);
+    params = simple_input_parser(params, varargin, validators);
 
     function valid = validate_c(value)
         % validation logic
