@@ -1,4 +1,4 @@
-function default_struct = simple_input_parser( default_struct, raw_varargin, validators )
+function [default_struct, extra_flags] = simple_input_parser( default_struct, raw_varargin, validators )
 %SIMPLE_INPUT_PARSER is a varargin parser mechanism that provides a
 %convenient way to enchance your custom function parameter handling.
 %
@@ -53,7 +53,7 @@ switch nargin
         validators = {};
 end
 if nargin > 3
-    error([MODULE_NAME, ':tooMuchParameters - ', 'To much parameters were passed. The max number of paramerest is 3.']);
+    error([MODULE_NAME, ':tooMuchParameters - ', 'To much parameters were passed. The max number of parameters is 3.']);
 end
 
 %% Global parameters
@@ -63,20 +63,43 @@ ambiguous_keys = {};
 keys = fieldnames(default_struct);
 varlen = length(raw_varargin);
 
+%% Handle output parameters
+switch nargout
+    case 0
+    case 1
+        extra_flags = 0;
+    case 2
+        % init extra_flags
+        for index=1:size(keys)
+            extra_flags.(keys{index}) = 0;
+        end
+        initial_struct = default_struct;
+    otherwise
+        error([MODULE_NAME, ':tooMuchParameters - ', 'To much output parameters. The max number of output parameters is 2.']);
+end
+
 %% Mode selection and error handling logic
 try
     switch varlen
         case 1
             parse_flags();
         case 2
-            parse_bulk_values()
+            parse_bulk_values();
         otherwise
             first_element = raw_varargin{1};
             if ismember(first_element, keys) && mod(varlen,2) ~= 1
-                parse_key_value_pairs()
+                parse_key_value_pairs();
             else
-                parse_bulk_values()
+                parse_bulk_values();
             end
+    end
+    if nargout == 2
+        keys = fieldnames(default_struct);
+        for index=1:length(keys)
+            if initial_struct.(keys{index}) ~= default_struct.(keys{index})
+                extra_flags.(keys{index}) = 1;
+            end
+        end
     end
 catch exception
     if RETHROW_EXCEPTIONS
@@ -290,4 +313,3 @@ end
     end
 
 end
-
