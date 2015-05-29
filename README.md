@@ -195,19 +195,30 @@ function ret = my_function( varargin )
     params.a = 0;
     params.b = 0;
     params.c = 0;
+    
+    function [validflag, errormsg] = validate_c(value)
+        errormsg = 'Parameter c has to be greater than 1..';
+        validflag = value > 1;
+    end
 
-    validators.b = @validate_c()
+    validators.b = @validate_c;
 
     params = simple_input_parser(params, varargin, validators);
-
-    function valid = validate_c(value)
-        % validation logic
-    end
 
     % further functionalities
 
 end
 ```
+
+By calling the function with `my_function('abc',1,0,3)`, Simple Input Parser will provide the following error message:
+
+```
+SimpleInputParser:validationError - Invalid value was found for the key "b" according to the given validator function:      0
+
+ Parameter c has to be greater than 1..
+```
+
+In this way you can provide your customers a detailed error message.
 
 ## Contribution
 
@@ -215,20 +226,21 @@ If you want to contribute to this project you have to make sure, that your contr
 
 If a pull request fails any of the tests, the request will be automatically invalidated.
 
-The current _MATLAB_ port contains 30 tests:
+The current _MATLAB_ port contains 34 tests:
 
 ```
 Running SimpleInputParserTests
 ..........
 ..........
 ..........
+....
 Done SimpleInputParserTests
 __________
 
                  result              
     _________________________________
 
-    [1x30 matlab.unittest.TestResult]
+    [1x34 matlab.unittest.TestResult]
 ```
 
 ## License
