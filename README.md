@@ -232,7 +232,8 @@ end
 By calling the function with `my_function('abc',1,0,3)`, Simple Input Parser will provide the following error message:
 
 ```
-SimpleInputParser:validationError - Invalid value was found for the key "b" according to the given validator function:      0
+SimpleInputParser:validationError - Invalid value was found for the key "b" according 
+to the given validator function:      0
 
  Parameter c has to be greater than 1..
 ```
