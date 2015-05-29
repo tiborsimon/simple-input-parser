@@ -389,24 +389,34 @@ classdef SimpleInputParserTests < matlab.unittest.TestCase
         function test_Validator_BasicFunctionality_Passed(testCase)
             data.a = 'gg';
             
-            validator.a = @ischar;
+            function [validflag, errormsg] = validate_a(value)
+                errormsg = 'Parameter a has to be a char..';
+                validflag = ischar(value);
+            end
+
+            validators.a = @validate_a;
             
             raw_varargin = {'a', 'f'};
             
             expected.a = 'f';
             
-            result = simple_input_parser(data, raw_varargin, validator);
+            result = simple_input_parser(data, raw_varargin, validators);
             testCase.verifyEqual(expected, result);
         end
         
         function test_Validator_BasicFunctionality_Failed(testCase)
             data.a = 1;
             
-            validator.a = @ischar;
+            function [validflag, errormsg] = validate_a(value)
+                errormsg = 'Parameter a has to be a char..';
+                validflag = ischar(value);
+            end
+
+            validators.a = @validate_a;
             
             raw_varargin = {'a', 42};
             
-            testCase.verifyError(@() simple_input_parser(data, raw_varargin, validator), 'SimpleInputParser:validationError')
+            testCase.verifyError(@() simple_input_parser(data, raw_varargin, validators), 'SimpleInputParser:validationError')
         end
 
     end
