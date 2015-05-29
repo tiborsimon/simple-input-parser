@@ -154,6 +154,28 @@ function ret = my_function( varargin )
 end
 ```
 
+#### Extra flag mode
+
+You can get a flag structure at any time, if you use a secondary output variable. This secondary output parameter will be assigned the same flag structure, as provided in the Flag mode.
+
+``` matlab
+function ret = my_function( varargin )
+
+    params.a = 0;
+    params.b = 0;
+    params.c = 0;
+
+    [params, flags] = simple_input_parser(flags, varargin);
+    
+    % if a value was parsed, it's corresponding field in the flags structure will be assigned to one
+
+    % further functionalities
+
+end
+```
+
+
+
 
 ## Custom validators
 
