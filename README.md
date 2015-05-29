@@ -144,9 +144,9 @@ ssin('AfLfsphi', 2, 440, 0.8, 48e3, 45)
 Aha, you may think that without spaces Simple Input Parser can be confused by passing ambiguous key names in it. Sadly, it can handle them happily :)
 
 ```
-my_function('f1 fs ff2',5,0,3)
-my_function('f1fsff2',5,0,3)
-my_function('ff2f1fs',5,0,3)
+my_function('f fs ff2',5,0,3)
+my_function('ffsff2',5,0,3)
+my_function('ff2ffs',3,5,0)
 ```
 
 All of these function calls are valid and they will be resulted to the same parameter assignment inside your fuction.
