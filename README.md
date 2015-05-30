@@ -246,21 +246,21 @@ If you want to contribute to this project you have to make sure, that your contr
 
 If a pull request fails any of the tests, the request will be automatically invalidated.
 
-The current _MATLAB_ port contains 34 tests:
+The current _MATLAB_ port contains 35 tests:
 
 ```
 Running SimpleInputParserTests
 ..........
 ..........
 ..........
-....
+.....
 Done SimpleInputParserTests
 __________
 
                  result              
     _________________________________
 
-    [1x34 matlab.unittest.TestResult]
+    [1x35 matlab.unittest.TestResult]
 ```
 
 ## License
