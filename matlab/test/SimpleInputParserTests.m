@@ -383,6 +383,21 @@ classdef SimpleInputParserTests < matlab.unittest.TestCase
             testCase.verifyEqual(result, expected);
             testCase.verifyEqual(result, val);
         end
+        
+        function test_ExtendedFlagMode_CanHandleStringsAsWell(testCase)
+            data.a = 0;
+            data.b = 'f';
+            data.c = 'g';
+            
+            raw_varargin = {'abc',3,'ff','dd'};
+            
+            expected.a = 1;
+            expected.b = 1;
+            expected.c = 1;
+            
+            [val, result] = simple_input_parser(data, raw_varargin);
+            testCase.verifyEqual(result, expected);
+        end
 
         
 %% Validator tests
