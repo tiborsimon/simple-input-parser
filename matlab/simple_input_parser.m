@@ -62,6 +62,7 @@ raw_varargin;
 ambiguous_keys = {}; 
 keys = fieldnames(default_struct);
 varlen = length(raw_varargin);
+extra_flags_mode = 0;
 
 %% Handle output parameters
 switch nargout
@@ -69,11 +70,10 @@ switch nargout
     case 1
         extra_flags = 0;
     case 2
-        % init extra_flags
         for index=1:size(keys)
             extra_flags.(keys{index}) = 0;
         end
-        initial_struct = default_struct;
+        extra_flags_mode = 1;
     otherwise
         error([MODULE_NAME, ':tooMuchParameters - ', 'To much output parameters. The max number of output parameters is 2.']);
 end
@@ -92,14 +92,6 @@ try
             else
                 parse_bulk_values();
             end
-    end
-    if nargout == 2
-        keys = fieldnames(default_struct);
-        for index=1:length(keys)
-            if initial_struct.(keys{index}) ~= default_struct.(keys{index})
-                extra_flags.(keys{index}) = 1;
-            end
-        end
     end
 catch exception
     if RETHROW_EXCEPTIONS
@@ -267,6 +259,9 @@ end
     function overwrite_value_for_key(key, value)
         validate_value_for_key(key, value);
         default_struct.(key) = value;
+        if extra_flags_mode
+            extra_flags.(key) = 1;
+        end
     end
 
     function validate_value_for_key(key, value)
