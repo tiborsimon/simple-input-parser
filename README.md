@@ -18,6 +18,14 @@ The current version sports a _MATLAB_ implementation, but other language ports a
 - Parameter validation by type
 - Custom validator functions with custom error messages
 
+## Installation
+
+- Download the <a href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank"><img src="http://tiborsimon.github.io/images/core/latest-release.png" align="center" /></a> of <a href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">__Simple Input Parser__</a>.
+- Run the `install.m` script inside the downloaded folder.
+- Done. Now you have __Simple Input Parser__ on your system.
+
+_This installation method is powered by the <a href="http://tiborsimon.github.io/programming/matlab-library-system/" target="_blank" >MATLAB Library System</a>._
+
 #### Old way to call a function
 
 Say you have a function with a lot of parameters. Some of them may be optional. In the old way, your users had to remember exactly how many parameters would your function need and they had to remember the exact order of the parameters as well.
