@@ -28,7 +28,7 @@
 % SOFTWARE.
 
 function uninstall()
-    disp(' ');
+
     if core_checkenvironment(dir);
 
         [name, version, message] = core_getlibrarydata();
@@ -60,6 +60,7 @@ function uninstall()
         disp('--------------------------------------------------------------------------------------');
         disp([' ', name, ' ', version, ' has been successfully uninstalled from your system!']);
         disp('======================================================================================');
+        disp(' ');
         clear name version newPath rootDirectory allLibraryDirectories
     else
         error('Error: You are in the wrong folder! Make sure you navigate to the root folder of your library that contains the uninstall script!');
