@@ -26,6 +26,10 @@ The current version sports a _MATLAB_ implementation, but other language ports a
 
 _This installation method is powered by the <a href="http://tiborsimon.github.io/programming/matlab-library-system/" target="_blank" >MATLAB Library System</a>._
 
+## Is this necessary for me?
+
+Well, you decide..
+
 #### Old way to call a function
 
 Say you have a function with a lot of parameters. Some of them may be optional. In the old way, your users had to remember exactly how many parameters would your function need and they had to remember the exact order of the parameters as well.
