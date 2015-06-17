@@ -45,7 +45,13 @@ MODULE_NAME = 'SimpleInputParser';
 %% Handle missing parameters
 switch nargin
     case 0
-        error([MODULE_NAME, ':notEnoughParameter - ', 'No parameter was passed to the function!']);
+        disp(' ');
+        disp(' Simple Input Parser demo mode.');
+        disp('  Status:   working');
+        disp('  This message was appeared due to no niput parameters were passed to the function.');
+        disp('  Have a nice day!');
+        disp(' ');
+        return;
     case 1
         raw_varargin = {};
         validators = {};
