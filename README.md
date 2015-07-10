@@ -10,7 +10,7 @@ The current version sports a _MATLAB_ implementation, but other language ports a
 <a title="Goto article" href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank">
    <img src="https://img.shields.io/badge/article-read-blue.svg?style=flat" />
 </a>
-<a title="Goto discussion" href="http://tiborsimon.github.io/programming/simple-input-parser//#discussion" target="_blank">
+<a title="Goto discussion" href="http://tiborsimon.github.io/programming/simple-input-parser/#discussion" target="_blank">
    <img src="https://img.shields.io/badge/discussion-join-orange.svg?style=flat" />
 </a>
 <a title="License" href="#license">
