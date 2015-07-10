@@ -4,7 +4,18 @@ Easy to use variable lenght input parser mechanism that provides a convenient an
 
 The current version sports a _MATLAB_ implementation, but other language ports are coming too.
 
-<a href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank"><img src="http://tiborsimon.github.io/images/core/corresponding-article.png" /></a>   <a href="http://tiborsimon.github.io/programming/simple-input-parser#discussion" target="_blank"><img src="http://tiborsimon.github.io/images/core/join-to-the-discussion.png" /></a>
+<a title="Latest version" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
+   <img src="https://img.shields.io/badge/version-v1.3-green.svg?style=flat" />
+</a>
+<a title="Goto article" href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank">
+   <img src="https://img.shields.io/badge/article-read-blue.svg?style=flat" />
+</a>
+<a title="Goto discussion" href="http://tiborsimon.github.io/programming/simple-input-parser//#discussion" target="_blank">
+   <img src="https://img.shields.io/badge/discussion-join-orange.svg?style=flat" />
+</a>
+<a title="License" href="#license">
+   <img src="http://img.shields.io/badge/license-MIT-green.svg?style=flat" />
+</a>
 
 ### Features
 
@@ -20,7 +31,9 @@ The current version sports a _MATLAB_ implementation, but other language ports a
 
 ## Installation
 
-- Download the <a href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank"><img src="http://tiborsimon.github.io/images/core/latest-release.png" align="center" /></a> of <a href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">__Simple Input Parser__</a>.
+- Download the latest release: <a title="Latest release" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
+   <img src="https://img.shields.io/badge/simple--input--parser-v1.3-green.svg?style=flat" />
+</a>
 - Run the `install.m` script inside the downloaded folder.
 - Done. Now you have __Simple Input Parser__ on your system.
 
