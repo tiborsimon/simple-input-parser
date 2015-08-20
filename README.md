@@ -35,7 +35,7 @@ The current version sports a _MATLAB_ implementation, but other language ports a
 - Run the `install.m` script or the `install` command inside the downloaded `simple-input-parser` folder.
 - Done. Now you have __Simple Input Parser__ on your system.
 
-_This installation method is powered by the <a href="http://tiborsimon.github.io/programming/matlab-library-system/" target="_blank" >MATLAB Library System</a>._
+_This installation method is powered by the <a href="http://tiborsimon.io/projects/matlab-library-system/" target="_blank" >MATLAB Library System</a>._
 
 ## Is this necessary for me?
 
