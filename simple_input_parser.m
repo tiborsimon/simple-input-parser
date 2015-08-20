@@ -48,7 +48,7 @@ switch nargin
         disp(' ');
         disp(' Simple Input Parser demo mode.');
         disp('  Status:   working');
-        disp('  This message was appeared due to no niput parameters were passed to the function.');
+        disp('  This message was appeared due to no input parameters were passed to the function.');
         disp('  Have a nice day!');
         disp(' ');
         return;
