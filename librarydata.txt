@@ -1,3 +1,0 @@
-Simple Input Parser
-v1.3
-HINT: Test your installation by typing: simple_input_parser()
