@@ -5,7 +5,7 @@ Easy to use variable lenght input parser mechanism that provides a convenient an
 The current version sports a _MATLAB_ implementation, but other language ports are coming too.
 
 <a title="Latest version" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
-   <img src="https://img.shields.io/badge/version-v1.3-green.svg?style=flat" />
+   <img src="https://img.shields.io/badge/version-v1.4.0-green.svg?style=flat" />
 </a>
 <a title="Goto article" href="http://tiborsimon.github.io/programming/simple-input-parser/" target="_blank">
    <img src="https://img.shields.io/badge/article-read-blue.svg?style=flat" />
@@ -31,10 +31,8 @@ The current version sports a _MATLAB_ implementation, but other language ports a
 
 ## Installation
 
-- Download the latest release: <a title="Latest release" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
-   <img src="https://img.shields.io/badge/simple--input--parser-v1.3-green.svg?style=flat" />
-</a>
-- Run the `install.m` script inside the downloaded folder.
+- Download the [latest release](https://github.com/tiborsimon/simple-input-parser/releases/latest).
+- Run the `install.m` script inside the downloaded `simple-input-parser` folder.
 - Done. Now you have __Simple Input Parser__ on your system.
 
 _This installation method is powered by the <a href="http://tiborsimon.github.io/programming/matlab-library-system/" target="_blank" >MATLAB Library System</a>._
