@@ -5,7 +5,7 @@ Easy to use variable lenght input parser mechanism that provides a convenient an
 The current version sports a _MATLAB_ implementation, but other language ports are coming too.
 
 <a title="Latest version" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
-   <img src="https://img.shields.io/badge/version-v1.4.0-green.svg?style=flat" />
+   <img src="https://img.shields.io/badge/version-v1.4.1-green.svg?style=flat" />
 </a>
 <a title="Goto article" href="http://tiborsimon.io/projects/simple-input-parser/" target="_blank">
    <img src="https://img.shields.io/badge/article-read-blue.svg?style=flat" />
