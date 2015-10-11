@@ -17,33 +17,139 @@ The current version sports a _MATLAB_ implementation, but other language ports a
    <img src="http://img.shields.io/badge/license-MIT-green.svg?style=flat" />
 </a>
 
-### Features
+## Documentation v2.4.0
 
-- Arbitrary parameter order
-- Three mode of operation
-   - Key value pair mode
-   - Bulk mode
-   - Flag mode
-   - Extra flag mode
-- Compact yet clear parameter passing
-- Parameter validation by type
-- Custom validator functions with custom error messages
+What would you do in a situation, when you want to use a third party function or library, but the only documentation is a usage example?
 
-## Installation
+```
+% use this function to generate a sine wave
+ssin(440, 2, 45, 48e3, 0.8)
+```
 
-- Download the [latest release](https://github.com/tiborsimon/simple-input-parser/releases/latest).
-- Run the `install.m` script or the `install` command inside the downloaded `simple-input-parser` folder.
-- Done. Now you have __Simple Input Parser__ on your system.
+Well, unless you are despearte enough to dvelve into the souce code to figure out which parameter is which this function is pretty useless for you.
 
-_This installation method is powered by the <a href="http://tiborsimon.io/projects/matlab-library-system/" target="_blank" >MATLAB Library System</a>._
+## Key-value pair mode
 
-## Is this necessary for me?
+It would be much more useful, if there would be a built in guide that is self-explanatory. Do you prefer this way instead?
 
-Well, you decide..
+```
+ssin('f', 440, 'A', 2, 'phi', 45, 'fs', 48e3, 'L', 0.8)
+```
 
-#### Old way to call a function
+You know exactly what you are going to do in this case. You type a bit more, but the function call is self-explanatory for everyone else, and this is exactly what __Simple Input Parser__ provides for you in the first place. This mode is called _key-value pair mode_.
 
-Say you have a function with a lot of parameters. Some of them may be optional. In the old way, your users had to remember exactly how many parameters would your function need and they had to remember the exact order of the parameters as well.
+But. If you want to use this function, you will have to remember the exact order of the parameters. If a function has more than 4 or 5 parameters you will have a hard time remembering what goes to another. What if there would be no parameter order constrain at all? With __Simple Input Parser__ you can pass your _key-value_ pairs in any order you like.
+
+## Bulk mode
+
+How about writing less apostrophes?
+
+```
+ssin('A f L fs phi', 2, 440, 0.8, 48e3, 45)
+```
+
+This is the _bulk mode_ of __Simple Input Parser__. You write the keys first as a string, and the the values in the order you have specified before. Same self-explanatory function call with less apostrophes and commas to write.
+
+How about this function call?
+
+```
+ssin('AfLfsphi', 2, 440, 0.8, 48e3, 45)
+```
+
+Well, this is still the _bulk mode_ and it is completely valid with __Simple Input Parser__. A little less self-explanatory, bat it is incredible fast to write. Feel free to use it whenever you want.
+
+
+## All features
+
+We have discussed the first three features of __Simple Input Parser__ which would be useful for the _users_ that are using the functions equiped with __Simple Input Parser__, but the are another three very useful features for the _developers_ as well.
+
+| For the users | For the developers |
+|:--------------|:-------------------|
+| 1. Arbitrary parameter order | 4. Extra flag mode |
+| 2. Key value pair mode | 5. Automatic parameter validation by type |
+| 3. Bulk mode | 6. Custom validator functions with custom error messages |
+
+Before we go into the details of the final three featurea, you have to install __Simple Input Parser__.
+
+
+## Installation as an MLS package
+
+In the <a href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">latest release page</a> you can find the MLS package containing Simple Input Parser. This method provides a simple and easy installation.
+
+1. Download and unpack the [latest release](https://github.com/tiborsimon/simple-input-parser/releases/latest) into your machine.
+1. Navigate into the unpacked folder and run the `install` command or open up and run the `install.m` script.
+1. Done. Now you have __Simple Input Parser__ on your system.
+
+_MLS packages are powered by the <a href="http://tiborsimon.io/projects/#TSPR0001" target="_blank" >MATLAB Library System</a>._ Go to that link to find oup more about this systemIt's a good practice to keep all your MLS packages in a common folder and use the <a href="http://tiborsimon.io/projects/TSPR0001/#Bestpractice" target="_blank">install_all.m</a> script to install all your packages at once.
+
+## Installation in the traditional way
+If you are not interested in the MLS package system, yu can still download the pure [__Simple Input Parser__ source files](https://github.com/tiborsimon/simple-input-parser/releases/latest), and you can install/include them manually anywhere you want.
+
+## Basic usecase
+
+Let's say you want to write a function with __Simple Input Parser__ that expects three parameters: `a`, `b`, `c`. Your can write this function in the usual way except three things:
+
+1. You have to use _varargin_ for the parameter list.
+2. You have to create a _parameter structure_ that will contain your parameters and it's default values.
+3. You have to call the `simple_input_parser()` api function with the _parameter structure_ and the _varargin_ parameter.
+
+__Congratulation!__ With this _three_ simple modifications you have implemented _four_ features from the _six_ __Simple Input Parser__ features!
+
+
+```
+function ret = my_function(varargin)
+
+    params.a = 42;
+    params.b = 'answer';
+    params.c = 55.3;
+
+    params = simple_input_parser(params, varargin);
+
+    % further functionalities
+
+end
+```
+
+To name this four features:
+
+- `my_function()` can accept it's parameters in an arbitrary order
+- it will support the _key-value pair_ mode..
+- ..as well as the _bulk mode_, the mode selection is automatic
+- it will perform an automatic parameter type validation, since you have implicitly defined your parameter's types.
+
+The `simple_input_parser()` function will return with the modified parameter structure. If the user did not passed the parameter, the default value will be used that you specified earlier.
+
+
+## Extra flag mode
+
+## Custom validators
+
+## Error handling
+
+There is a parameter called `RETHROW_EXCEPTIONS` that you can edit in the `simple_input_parser.m` file. This variable allows you to control the libary's behavior in case of error. You can select if the library 
+
+
+```
+%% Customizable parameters
+
+% In case of a parsing error, select if you want to terminate your program
+% with an error, or catch an exception on your own.
+RETHROW_EXCEPTIONS = true;
+
+% Name that presents on the exception and error message header. There
+% shold be only characters in it. No special characters nor whitespaces.
+```
+
+If turn on this feature by setting the 
+
+
+
+
+
+
+
+
+ay you have a function with a lot of parameters. Some of them may be optional. In the old way, your users had to remember exactly how many parameters would your function need and they had to remember the exact order of the parameters as well.
 
 Let's take a sine syntesizer function.
 ```
@@ -124,6 +230,7 @@ function ret = my_function( varargin )
 
 end
 ```
+
 By declaring a default data array you have done two things at once: 
 - defining the names of the parameters
 - defining it's type
