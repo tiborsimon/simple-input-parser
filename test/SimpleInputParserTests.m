@@ -197,6 +197,27 @@ classdef SimpleInputParserTests < matlab.unittest.TestCase
             testCase.verifyEqual(expected, result);
         end
         
+        function test_BulkMode_ParseAmbiguousLotOfKeysWithoutRepetition2(testCase)
+            data.f = '';
+            data.fs = '';
+            data.fsd = '';
+            data.fsdh = '';
+            data.fsdhj = '';
+            data.fsdhjk = '';
+            
+            raw_varargin = {'fsdhjfsdhjkffsdhfsfsd', 'fsdhj','fsdhjk','f','fsdh','fs','fsd'};
+            
+            expected.f = 'f';
+            expected.fs = 'fs';
+            expected.fsd = 'fsd';
+            expected.fsdh = 'fsdh';
+            expected.fsdhj = 'fsdhj';
+            expected.fsdhjk = 'fsdhjk';
+            
+            result = simple_input_parser(data, raw_varargin);
+            testCase.verifyEqual(expected, result);
+        end
+        
         function test_BulkMode_ParseAmbiguousTwoKeysWithRepetition(testCase)
             data.f = 1;
             data.ff = 1;
@@ -268,7 +289,7 @@ classdef SimpleInputParserTests < matlab.unittest.TestCase
             
             raw_varargin = {'a', 42, 12};
             
-            testCase.verifyError(@() simple_input_parser(data, raw_varargin), 'SimpleInputParser:unparsedValues')
+            testCase.verifyError(@() simple_input_parser(data, raw_varargin), 'SimpleInputParser:unusedValue')
         end
         
         function test_BulkMode_InvalidValueType(testCase)
@@ -280,53 +301,53 @@ classdef SimpleInputParserTests < matlab.unittest.TestCase
             testCase.verifyError(@() simple_input_parser(data, raw_varargin), 'SimpleInputParser:typeError')
         end
         
+% %% Flag Mode
+%         function test_FlagMode_BasicFunctionality(testCase)
+%             data.a = 0;
+%             
+%             raw_varargin = {'a'};
+%             
+%             expected.a = 1;
+%             
+%             result = simple_input_parser(data, raw_varargin);
+%             testCase.verifyEqual(expected, result);
+%         end
+%         
+%         function test_FlagMode_ParseTwoKeys(testCase)
+%             data.a = 0;
+%             data.b = 0;
+%             
+%             raw_varargin = {'ab'};
+%             
+%             expected.a = 1;
+%             expected.b = 1;
+%             
+%             result = simple_input_parser(data, raw_varargin);
+%             testCase.verifyEqual(expected, result);
+%         end
+%         
+%         function test_FlagMode_TwoKeysButParsedOnlyOne(testCase)
+%             data.a = 0;
+%             data.b = 0;
+%             
+%             raw_varargin = {'a'};
+%             
+%             expected.a = 1;
+%             expected.b = 0;
+%             
+%             result = simple_input_parser(data, raw_varargin);
+%             testCase.verifyEqual(expected, result);
+%         end
+%         
+%         function test_FlagMode_WarningIfDefaultAreNotZero(testCase)
+%             data.a = 6;
+%             
+%             raw_varargin = {'a'};
+%             
+%             testCase.verifyWarning(@() simple_input_parser(data, raw_varargin), '')
+%         end
+        
 %% Flag Mode
-        function test_FlagMode_BasicFunctionality(testCase)
-            data.a = 0;
-            
-            raw_varargin = {'a'};
-            
-            expected.a = 1;
-            
-            result = simple_input_parser(data, raw_varargin);
-            testCase.verifyEqual(expected, result);
-        end
-        
-        function test_FlagMode_ParseTwoKeys(testCase)
-            data.a = 0;
-            data.b = 0;
-            
-            raw_varargin = {'ab'};
-            
-            expected.a = 1;
-            expected.b = 1;
-            
-            result = simple_input_parser(data, raw_varargin);
-            testCase.verifyEqual(expected, result);
-        end
-        
-        function test_FlagMode_TwoKeysButParsedOnlyOne(testCase)
-            data.a = 0;
-            data.b = 0;
-            
-            raw_varargin = {'a'};
-            
-            expected.a = 1;
-            expected.b = 0;
-            
-            result = simple_input_parser(data, raw_varargin);
-            testCase.verifyEqual(expected, result);
-        end
-        
-        function test_FlagMode_WarningIfDefaultAreNotZero(testCase)
-            data.a = 6;
-            
-            raw_varargin = {'a'};
-            
-            testCase.verifyWarning(@() simple_input_parser(data, raw_varargin), '')
-        end
-        
-%% Extended Flag Mode
         function test_ExtendedFlagMode_BasicFunctionality(testCase)
             data.a = 0;
             
@@ -366,22 +387,6 @@ classdef SimpleInputParserTests < matlab.unittest.TestCase
             
             [val, result] = simple_input_parser(data, raw_varargin);
             testCase.verifyEqual(result, expected);
-        end
-        
-        function test_ExtendedFlagMode_FlagModeCompatibility(testCase)
-            data.a = 0;
-            data.b = 0;
-            data.c = 0;
-            
-            raw_varargin = {'ac'};
-            
-            expected.a = 1;
-            expected.b = 0;
-            expected.c = 1;
-            
-            [val, result] = simple_input_parser(data, raw_varargin);
-            testCase.verifyEqual(result, expected);
-            testCase.verifyEqual(result, val);
         end
         
         function test_ExtendedFlagMode_CanHandleStringsAsWell(testCase)

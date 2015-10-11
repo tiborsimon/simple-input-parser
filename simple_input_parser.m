@@ -1,4 +1,4 @@
-function [default_struct, extra_flags] = simple_input_parser( default_struct, raw_varargin, validators )
+function [default_struct_out, extra_flags_out] = simple_input_parser( default_struct, raw_varargin, validators )
 %SIMPLE_INPUT_PARSER is a varargin parser mechanism that provides a
 %convenient way to enchance your custom function parameter handling.
 %
@@ -42,53 +42,60 @@ RETHROW_EXCEPTIONS = true;
 % shold be only characters in it. No special characters nor whitespaces.
 MODULE_NAME = 'SimpleInputParser';
 
-%% Handle missing parameters
-switch nargin
-    case 0
-        disp(' ');
-        disp(' Simple Input Parser demo mode.');
-        disp('  Status:   working');
-        disp('  This message was appeared due to no input parameters were passed to the function.');
-        disp('  Have a nice day!');
-        disp(' ');
-        return;
-    case 1
-        raw_varargin = {};
-        validators = {};
-    case 2
-        validators = {};
-end
-if nargin > 3
-    error([MODULE_NAME, ':tooMuchParameters - ', 'To much parameters were passed. The max number of parameters is 3.']);
-end
-
 %% Global parameters
 default_struct;
 raw_varargin;
-ambiguous_keys = {}; 
-keys = fieldnames(default_struct);
-varlen = length(raw_varargin);
-extra_flags_mode = 0;
+ambiguous_keys     = {}; 
+ambiguous_keys_initial     = {};
+bulk_parsed_keys   = {};
+keys               = fieldnames(default_struct);
+varlen             = length(raw_varargin);
+extra_flags_mode   = 0;
 
-%% Handle output parameters
-switch nargout
-    case 0
-    case 1
-        extra_flags = 0;
-    case 2
-        for index=1:size(keys)
-            extra_flags.(keys{index}) = 0;
-        end
-        extra_flags_mode = 1;
-    otherwise
-        error([MODULE_NAME, ':tooMuchParameters - ', 'To much output parameters. The max number of output parameters is 2.']);
-end
+default_struct_out = {};
+extra_flags_out    = {};
 
 %% Mode selection and error handling logic
 try
+    % Handle missing parameters
+    switch nargin
+        case 0
+            % Called with no parameters SimpleInputParser will run in demo mode
+            disp(' ');
+            disp(' Simple Input Parser demo mode.');
+            disp('  Status:   working');
+            disp('  This message was appeared due to no input parameters were passed to the function.');
+            disp('  Have a nice day!');
+            disp(' ');
+            return;
+        case 1
+            raw_varargin = {};
+            validators = {};
+        case 2
+            % if validators are not passed, set them to empty
+            validators = {};
+    end
+    if nargin > 3
+        throw_exception('API_error_tooMuchParameters', 'To much API input parameters. The max number is 3.');
+    end
+
+    % Handle output parameters
+    switch nargout
+        case 0
+        case 1
+            extra_flags = 0;
+        case 2
+            for index=1:size(keys)
+                extra_flags.(keys{index}) = 0;
+            end
+            extra_flags_mode = 1;
+        otherwise
+            throw_exception('API_error_tooMuchParameters', 'To much API output parameters. The max number is 2.');
+    end
+
     switch varlen
         case 1
-            parse_flags();
+            throw_exception('invalidParameterLength', 'Invalid input paramter length. At least 2 parameters required. A key and a value.');
         case 2
             parse_bulk_values();
         otherwise
@@ -99,47 +106,36 @@ try
                 parse_bulk_values();
             end
     end
+    default_struct_out = default_struct;
+    extra_flags_out = extra_flags;
 catch exception
     if RETHROW_EXCEPTIONS
-        rethrow(exception);
+        throw(exception);
     else
-        error([exception.identifier, ' - ', exception.message]);
+        disp(' ');
+        disp(['ERROR ' exception.identifier, ' - ', exception.message]);
+        disp(' ');
     end
 end
-
-%% Flag mode
-    function parse_flags()
-        warn_if_default_values_not_zeros()
-        parse_raw_key_string(@flag_source);
-    end
-
-    function warn_if_default_values_not_zeros()
-        c = struct2cell(default_struct);
-        for k = 1:length(c)
-            if c{k} ~= 0
-                warning([MODULE_NAME, ':defaultWarning - ', 'Default struct contains non zero elements in flag mode! Make sure understand flag mode correctly. Type help sip for help.']);
-            end
-        end
-    end
-
-    function value = flag_source(index)
-        value = 1;
-    end
     
 %% Bulk mode
     function parse_bulk_values()
-        parse_raw_key_string(@get_varargin_element_for);
+        parse_raw_key_string();
     end
 
-    function parse_raw_key_string(value_source)
+    function parse_raw_key_string()
         check_for_ambigous_keys();
+        ambiguous_keys_initial = ambiguous_keys;
         parseable_keys = raw_varargin{1};
         value_index = 2;
         while length(parseable_keys)  % loop until there are characters in the raw key-string
-            [keys, parseable_keys, value_index] = match_raw_keys_for_value_index(keys, parseable_keys, value_source, value_index);
+            [keys, parseable_keys, value_index, ambi_ret] = match_raw_keys_for_value_index(keys, parseable_keys, value_index, false);
         end
-        if value_index < varlen + 1
-            throw_exception('unparsedValues', ['There were not enough keys to parse all of the provided values. There are ', num2str(varlen-value_index), ' values left.']);
+        if value_index == varlen
+            throw_exception('unusedValue', ['There were more values than keys provided. There is ', num2str(varlen-value_index+1), ' value left unused.']);
+        end
+        if value_index < varlen
+            throw_exception('unusedValue', ['There were more values than keys provided. There are ', num2str(varlen-value_index+1), ' values left unused.']);
         end
     end
 
@@ -160,20 +156,36 @@ end
         end
     end
 
-    function [updated_key_list, truncated_parseable_keys, value_index] = match_raw_keys_for_value_index(key_list, parseable_keys, value_source, value_index)
+    function [updated_key_list, truncated_parseable_keys, value_index, ambi_ret] = match_raw_keys_for_value_index(key_list, parseable_keys, value_index, ambi_call)
         l = length(key_list);
+        ambi_ret = false;
         k = 1;
         while k  % run through all the keys remainded
             if k == l+1
-                throw_exception('invalidKey', ['The token in the front of "', parseable_keys, '" is invalid! No matching valid parameter key was found.']);
+                throw_exception('invalidKey', ['The token "', parseable_keys, '" is invalid! No match found for the first characters in it. Parsing aborted..\n\nPossible solutions:\n  - Make sure you pass a key only once. Duplicated keys will abort the parsing.\n  - Make sure you only use valid keys. Look for valid keys in the documentation.']);
             end
-            current_key = key_list{k};
+            try
+                current_key = key_list{k};
+            catch
+                if check_for_redundant_keys(parseable_keys)
+                    throw_exception('redundantKey', ['The key in front of "', parseable_keys, '" was parsed before. Use a key only once!']);
+                end
+                throw_exception('unparsedToken', ['Tokens "', parseable_keys, '" was remained after all available parameters were parsed.']);
+            end
+            if check_for_redundant_keys(parseable_keys)
+                throw_exception('redundantKey', ['The key in front of "', parseable_keys, '" was parsed before. Use a key only once!']);
+            end
             [x, y] = regexp(parseable_keys, get_regexp_pattern_for_key(current_key));
             if x > 0
-                if ismember(current_key, ambiguous_keys)
+                if ismember(current_key, ambiguous_keys_initial)
                     amb_truncated_keys = remove_cell_from_array(key_list, current_key);
                     try
-                        [returned, parseable_keys, value_index] = match_raw_keys_for_value_index(amb_truncated_keys, parseable_keys, value_source, value_index);
+                        [returned, parseable_keys, value_index, ambi_ret] = match_raw_keys_for_value_index(amb_truncated_keys, parseable_keys, value_index, true);
+                        if ambi_ret && ambi_call
+                            updated_key_list = key_list;
+                            truncated_parseable_keys = parseable_keys;
+                            break
+                        end
                         ambiguous_keys = remove_cell_from_array(ambiguous_keys, current_key);
                         returned = append_cell_to_array(returned, current_key);
                         d = setdiff(key_list, returned);
@@ -186,14 +198,20 @@ end
                             truncated_parseable_keys = parseable_keys;
                             break
                         end
-                    catch
+                    catch exception
+                        disp(exception)
                     end
                 end
-                assert_if_value_for_key_is_invalid(current_key, value_source(value_index));
-                overwrite_value_for_key(current_key, value_source(value_index));
+                if value_index > length(raw_varargin)
+                   throw_exception('missingValue', 'There were more keys than values passed! Parsing aborted..');
+                end
+                assert_if_value_for_key_is_invalid(current_key, raw_varargin{value_index});
+                overwrite_value_for_key(current_key, raw_varargin{value_index});
                 updated_key_list = remove_cell_from_array(key_list, current_key);
-                truncated_parseable_keys = remove_string_head_until_index(parseable_keys,y);
+                [truncated_parseable_keys, removed_key] = remove_string_head_until_index(parseable_keys,y);
                 value_index = value_index + 1;
+                bulk_parsed_keys = append_cell_to_array(bulk_parsed_keys, removed_key);
+                ambi_ret = true;
                 break
             end
             k = k+1;
@@ -204,13 +222,27 @@ end
         pattern = strcat('^',key, '\s*');
     end
         
-    function shorter_string = remove_string_head_until_index(string, index)
+    function [shorter_string, removed_string] = remove_string_head_until_index(string, index)
         if length(string) == index
+            removed_string = string;
             string = '';
         else
+            removed_string = string(1:index);
             string = string(index+1:end);
         end 
         shorter_string = string;
+    end
+
+    function result = check_for_redundant_keys(remained_keys)
+       for kk=1:length(bulk_parsed_keys)
+           pattern = get_regexp_pattern_for_key(bulk_parsed_keys{kk});
+           m = regexp(remained_keys, pattern, 'match');
+           if ~ismember(m, ambiguous_keys_initial)
+               result = 1;
+               return
+           end
+       end
+       result = 0;
     end
 
 %% Key value pairs mode
@@ -220,11 +252,11 @@ end
             throw_exception('invalidParameter', 'Invalid paramter. Key provided but value is missing!');
         end
         for k = 1:2:varlen
-            current_key = get_varargin_element_for(k);
-            current_value = get_varargin_element_for(k+1);
+            current_key = raw_varargin{k};
+            current_value = raw_varargin{k+1};
             
             if ismember(current_key, parsed_keys)
-                throw_exception('redundantKey', ['Key "', current_key, '" was parsed before. This is redundancy!']);
+                throw_exception('redundantKey', ['Key "', current_key, '" was parsed before. Use a key only once!']);
             end
             
             assert_if_key_is_invalid(current_key)
@@ -281,9 +313,9 @@ end
         end
     end
 
-    function value = get_varargin_element_for(index)
-        value = raw_varargin{index};
-    end
+%     function value = get_varargin_element_for(index)
+%         value = raw_varargin{index};
+%     end
 
     function result = is_key_valid(key)
         result = ischar(key) && ismember(key, keys);
