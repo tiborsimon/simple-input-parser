@@ -93,6 +93,7 @@ try
             throw_exception('API_error_tooMuchParameters', 'To much API output parameters. The max number is 2.');
     end
 
+    % Mode selection
     switch varlen
         case 1
             throw_exception('invalidParameterLength', 'Invalid input paramter length. At least 2 parameters required. A key and a value.');
@@ -120,8 +121,76 @@ end
     
 %% Bulk mode
     function parse_bulk_values()
-        parse_raw_key_string();
+        check_for_ambigous_keys();
+        parseable_keys = raw_varargin{1};
+        value_index = 2;
+        while ~isempty(parseable_keys)  % loop until there are characters in the raw key-string
+            key = parse_key(parseable_keys, keys);
+            if isempty(key)
+                throw_exception('invalidKey', ['The token "', parseable_keys, '" is invalid! No match found for the first characters in it. Parsing aborted..\n\nPossible solutions:\n  - Make sure you pass a key only once. Duplicated keys will abort the parsing.\n  - Make sure you only use valid keys. Look for valid keys in the documentation.']);
+            end
+            if ismember(key, bulk_parsed_keys)
+                throw_exception('redundantKey', ['The key in front of "', parseable_keys, '" was parsed before. Use a key only once!']);
+            end
+            parseable_keys = parseable_keys((length(key)+1):end);
+            assert_if_value_for_key_is_invalid(key, raw_varargin{value_index});
+            overwrite_value_for_key(key, raw_varargin{value_index});
+            value_index = value_index + 1;
+            bulk_parsed_keys = append_cell_to_array(bulk_parsed_keys, key);
+        end
+        if value_index == varlen
+            throw_exception('unusedValue', ['There were more values than keys provided. There is ', num2str(varlen-value_index+1), ' value left unused.']);
+        end
+        if value_index < varlen
+            throw_exception('unusedValue', ['There were more values than keys provided. There are ', num2str(varlen-value_index+1), ' values left unused.']);
+        end
     end
+
+    function [ret_key] = parse_key(parseable_keys, key_list)
+        key_index = 1;
+        keys_length = length(key_list);
+        while 1
+            if key_index > keys_length
+                ret_key = '';
+                return;
+            end
+            if key_was_found(parseable_keys, key_list{key_index})
+                if ismember(key_list{key_index}, ambiguous_keys)
+                    truncated_keys = remove_cell_from_array(key_list, key_list{key_index});
+                    ret_key = parse_key(parseable_keys, truncated_keys);
+                    if isempty(ret_key)
+                        ret_key = key_list{key_index};
+                    end
+                    return;
+                else
+                    ret_key = key_list{key_index};
+                    return; 
+                end
+            else
+                key_index = key_index+1;
+            end
+        end
+    end
+
+    
+
+    function ret = key_was_found(parseable_keys, key)
+        pattern = strcat('^', key, '\s*');
+        ret = regexp(parseable_keys, pattern);
+    end
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     function parse_raw_key_string()
         check_for_ambigous_keys();
