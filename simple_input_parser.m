@@ -172,40 +172,9 @@ end
         end
     end
 
-    
-
     function ret = key_was_found(parseable_keys, key)
         pattern = strcat('^', key, '\s*');
         ret = regexp(parseable_keys, pattern);
-    end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    function parse_raw_key_string()
-        check_for_ambigous_keys();
-        ambiguous_keys_initial = ambiguous_keys;
-        parseable_keys = raw_varargin{1};
-        value_index = 2;
-        while length(parseable_keys)  % loop until there are characters in the raw key-string
-            [keys, parseable_keys, value_index, ambi_ret] = match_raw_keys_for_value_index(keys, parseable_keys, value_index, false);
-        end
-        if value_index == varlen
-            throw_exception('unusedValue', ['There were more values than keys provided. There is ', num2str(varlen-value_index+1), ' value left unused.']);
-        end
-        if value_index < varlen
-            throw_exception('unusedValue', ['There were more values than keys provided. There are ', num2str(varlen-value_index+1), ' values left unused.']);
-        end
     end
 
     function check_for_ambigous_keys()
@@ -223,95 +192,6 @@ end
                 end
             end
         end
-    end
-
-    function [updated_key_list, truncated_parseable_keys, value_index, ambi_ret] = match_raw_keys_for_value_index(key_list, parseable_keys, value_index, ambi_call)
-        l = length(key_list);
-        ambi_ret = false;
-        k = 1;
-        while k  % run through all the keys remainded
-            if k == l+1
-                throw_exception('invalidKey', ['The token "', parseable_keys, '" is invalid! No match found for the first characters in it. Parsing aborted..\n\nPossible solutions:\n  - Make sure you pass a key only once. Duplicated keys will abort the parsing.\n  - Make sure you only use valid keys. Look for valid keys in the documentation.']);
-            end
-            try
-                current_key = key_list{k};
-            catch
-                if check_for_redundant_keys(parseable_keys)
-                    throw_exception('redundantKey', ['The key in front of "', parseable_keys, '" was parsed before. Use a key only once!']);
-                end
-                throw_exception('unparsedToken', ['Tokens "', parseable_keys, '" was remained after all available parameters were parsed.']);
-            end
-            if check_for_redundant_keys(parseable_keys)
-                throw_exception('redundantKey', ['The key in front of "', parseable_keys, '" was parsed before. Use a key only once!']);
-            end
-            [x, y] = regexp(parseable_keys, get_regexp_pattern_for_key(current_key));
-            if x > 0
-                if ismember(current_key, ambiguous_keys_initial)
-                    amb_truncated_keys = remove_cell_from_array(key_list, current_key);
-                    try
-                        [returned, parseable_keys, value_index, ambi_ret] = match_raw_keys_for_value_index(amb_truncated_keys, parseable_keys, value_index, true);
-                        if ambi_ret && ambi_call
-                            updated_key_list = key_list;
-                            truncated_parseable_keys = parseable_keys;
-                            break
-                        end
-                        ambiguous_keys = remove_cell_from_array(ambiguous_keys, current_key);
-                        returned = append_cell_to_array(returned, current_key);
-                        d = setdiff(key_list, returned);
-                        key_list = remove_cell_from_array(key_list, d{1});
-                        l = l-1;
-                        if length(parseable_keys) > 0
-                            continue
-                        else
-                            updated_key_list = key_list;
-                            truncated_parseable_keys = parseable_keys;
-                            break
-                        end
-                    catch exception
-                        disp(exception)
-                    end
-                end
-                if value_index > length(raw_varargin)
-                   throw_exception('missingValue', 'There were more keys than values passed! Parsing aborted..');
-                end
-                assert_if_value_for_key_is_invalid(current_key, raw_varargin{value_index});
-                overwrite_value_for_key(current_key, raw_varargin{value_index});
-                updated_key_list = remove_cell_from_array(key_list, current_key);
-                [truncated_parseable_keys, removed_key] = remove_string_head_until_index(parseable_keys,y);
-                value_index = value_index + 1;
-                bulk_parsed_keys = append_cell_to_array(bulk_parsed_keys, removed_key);
-                ambi_ret = true;
-                break
-            end
-            k = k+1;
-        end
-    end
-
-    function pattern = get_regexp_pattern_for_key(key)
-        pattern = strcat('^',key, '\s*');
-    end
-        
-    function [shorter_string, removed_string] = remove_string_head_until_index(string, index)
-        if length(string) == index
-            removed_string = string;
-            string = '';
-        else
-            removed_string = string(1:index);
-            string = string(index+1:end);
-        end 
-        shorter_string = string;
-    end
-
-    function result = check_for_redundant_keys(remained_keys)
-       for kk=1:length(bulk_parsed_keys)
-           pattern = get_regexp_pattern_for_key(bulk_parsed_keys{kk});
-           m = regexp(remained_keys, pattern, 'match');
-           if ~ismember(m, ambiguous_keys_initial)
-               result = 1;
-               return
-           end
-       end
-       result = 0;
     end
 
 %% Key value pairs mode
