@@ -127,12 +127,12 @@ end
         while ~isempty(parseable_keys)  % loop until there are characters in the raw key-string
             key = parse_key(parseable_keys, keys);
             if isempty(key)
-                throw_exception('invalidKey', ['The token "', parseable_keys, '" is invalid! No match found for the first characters in it. Parsing aborted..\n\nPossible solutions:\n  - Make sure you pass a key only once. Duplicated keys will abort the parsing.\n  - Make sure you only use valid keys. Look for valid keys in the documentation.']);
+                throw_exception('invalidKey', ['The token "', parseable_keys, '" is invalid! No match found for the first characters in it. Parsing aborted..']);
             end
             if ismember(key, bulk_parsed_keys)
                 throw_exception('redundantKey', ['The key in front of "', parseable_keys, '" was parsed before. Use a key only once!']);
             end
-            parseable_keys = parseable_keys((length(key)+1):end);
+            parseable_keys = remove_token(parseable_keys, key);
             assert_if_value_for_key_is_invalid(key, raw_varargin{value_index});
             overwrite_value_for_key(key, raw_varargin{value_index});
             value_index = value_index + 1;
@@ -161,10 +161,10 @@ end
                     if isempty(ret_key)
                         ret_key = key_list{key_index};
                     end
-                    return;
+                    return
                 else
                     ret_key = key_list{key_index};
-                    return; 
+                    return
                 end
             else
                 key_index = key_index+1;
@@ -175,6 +175,12 @@ end
     function ret = key_was_found(parseable_keys, key)
         pattern = strcat('^', key, '\s*');
         ret = regexp(parseable_keys, pattern);
+    end
+
+    function ret = remove_token(parseable_keys, key)
+        pattern = strcat('^', key, '\s*');
+        [a,b] = regexp(parseable_keys, pattern);
+        ret = parseable_keys(b+1:end);
     end
 
     function check_for_ambigous_keys()
