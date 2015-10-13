@@ -5,7 +5,7 @@ Easy to use variable lenght input parser mechanism that provides a convenient an
 The current version sports a _MATLAB_ implementation, but other language ports are coming too.
 
 <a title="Latest version" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
-   <img src="https://img.shields.io/badge/version-v2.4.0-green.svg?style=flat" />
+   <img src="https://img.shields.io/badge/version-v2.0.0-green.svg?style=flat" />
 </a>
 <a title="Goto article" href="http://tiborsimon.io/projects/TSPR0002/" target="_blank">
    <img src="https://img.shields.io/badge/article-read-blue.svg?style=flat" />
@@ -17,7 +17,7 @@ The current version sports a _MATLAB_ implementation, but other language ports a
    <img src="http://img.shields.io/badge/license-MIT-green.svg?style=flat" />
 </a>
 
-## Documentation v2.4.0
+## Documentation v2.0.0
 
 What would you do in a situation, when you want to use a third party function or library, but the only documentation is a usage example?
 
