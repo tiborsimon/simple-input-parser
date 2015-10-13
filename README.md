@@ -2,8 +2,6 @@
 
 Easy to use variable lenght input parser mechanism that provides a convenient and advanced way to enchance your custom function parameter handling.
 
-The current version sports a _MATLAB_ implementation, but other language ports are coming too.
-
 <a title="Latest version" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
    <img src="https://img.shields.io/badge/version-v2.0.0-green.svg?style=flat" />
 </a>
@@ -26,7 +24,7 @@ What would you do in a situation, when you want to use a third party function or
 ssin(440, 2, 45, 48e3, 0.8)
 ```
 
-Well, unless you are despearte enough to dvelve into the souce code to figure out which parameter is which this function is pretty useless for you.
+Well, unless you are desperate enough to delve into the source code to figure out which parameter is which this function is pretty useless for you.
 
 ## Key-value pair mode
 
@@ -48,7 +46,7 @@ How about writing less apostrophes?
 ssin('A f L fs phi', 2, 440, 0.8, 48e3, 45)
 ```
 
-This is the _bulk mode_ of __Simple Input Parser__. You write the keys first as a string, and the the values in the order you have specified before. Same self-explanatory function call with less apostrophes and commas to write.
+This is the _bulk mode_ of __Simple Input Parser__. You write the keys first as a string, and the values in the order you have specified before. Same self-explanatory function call with less apostrophes and commas to write.
 
 How about this function call?
 
@@ -61,7 +59,7 @@ Well, this is still the _bulk mode_ and it is completely valid with __Simple Inp
 
 ## All features
 
-We have discussed the first three features of __Simple Input Parser__ which would be useful for the _users_ that are using the functions equiped with __Simple Input Parser__, but the are another three very useful features for the _developers_ as well.
+We have discussed the first three features of __Simple Input Parser__ which would be useful for the _users_ that are using the functions equipped with __Simple Input Parser__, but there are another three very useful features for the _developers_ as well.
 
 | For the users | For the developers |
 |:--------------|:-------------------|
@@ -80,17 +78,17 @@ In the <a href="https://github.com/tiborsimon/simple-input-parser/releases/lates
 1. Navigate into the unpacked folder and run the `install` command or open up and run the `install.m` script.
 1. Done. Now you have __Simple Input Parser__ on your system.
 
-_MLS packages are powered by the <a href="http://tiborsimon.io/projects/#TSPR0001" target="_blank" >MATLAB Library System</a>._ Go to that link to find oup more about this systemIt's a good practice to keep all your MLS packages in a common folder and use the <a href="http://tiborsimon.io/projects/TSPR0001/#Bestpractice" target="_blank">install_all.m</a> script to install all your packages at once.
+_MLS packages are powered by the <a href="http://tiborsimon.io/projects/#TSPR0001" target="_blank" >MATLAB Library System</a>._ Go to that link to find out more about this systemIt's a good practice to keep all your MLS packages in a common folder and use the <a href="http://tiborsimon.io/projects/TSPR0001/#Bestpractice" target="_blank">install_all.m</a> script to install all your packages at once.
 
 ## Installation in the traditional way
-If you are not interested in the MLS package system, yu can still download the pure [__Simple Input Parser__ source files](https://github.com/tiborsimon/simple-input-parser/releases/latest), and you can install/include them manually anywhere you want.
+If you are not interested in the MLS package system, you can still download the pure [__Simple Input Parser__ source files](https://github.com/tiborsimon/simple-input-parser/releases/latest), and you can install/include them manually anywhere you want.
 
-## Basic usecase
+## Basic use case
 
 Let's say you want to write a function with __Simple Input Parser__ that expects three parameters: `a`, `b`, `c`. Your can write this function in the usual way except three things:
 
 1. You have to use _varargin_ for the parameter list.
-2. You have to create a _parameter structure_ that will contain your parameters and it's default values.
+2. You have to create a _parameter structure_ that will contain your parameters and its default values.
 3. You have to call the `simple_input_parser()` api function with the _parameter structure_ and the _varargin_ parameter, and use the previously created _parameter structure_ for the output parameter.
 
 ```
@@ -121,7 +119,7 @@ The `simple_input_parser()` function will return with the modified parameter str
 
 ## Extra flag mode
 
-In some situations it might be useful, if you know, what parameters have your function got. At this point you might think, it can be implemented comparing the values in the parameter struct with it's default values. Well it is a reasonable method, but __Simple Input Parser__ offers an easier one.
+In some situations it might be useful, if you know, what parameters have your function got. At this point you might think, it can be implemented comparing the values in the parameter struct with its default values. Well, it is a reasonable method, but __Simple Input Parser__ offers an easier one.
 
 You can call the `simple_input_parser()` function with two input parameters. The first one is the output parameter structure and the second one is the __flag structure__. This mode is called _Extra flag mode_. 
 
@@ -161,7 +159,7 @@ end
 
 | Output |
 |:-------|
-|_validflag_ - Validation result. It is _true_ if the paramter passed the validation. |
+|_validflag_ - Validation result. It is _true_ if the parameter passed the validation. |
 |_errormsg_ - Message that will be displayed if the validation fails. |
 
 You can use any logic you want to generate the validation result (_validflag_) and the custom error message (_errormsg_) based on the given parameter value (_value_). 
@@ -195,7 +193,7 @@ You can use one _validator function_ for more than one parameters, but keep in m
 
 ## Error handling
 
-There is a parameter called `RETHROW_EXCEPTIONS` that you can edit in the `simple_input_parser.m` file. This variable allows you to control the libary's behavior in case of error. __Simple Input Parser__ has two error handling modes:
+There is a parameter called `RETHROW_EXCEPTIONS` that you can edit in the `simple_input_parser.m` file. This variable allows you to control the library's behavior in case of error. __Simple Input Parser__ has two error handling modes:
 
 |`RETHROW_EXCEPTIONS` | In case of an error `simple_input_parser()`.. |
 |:-------------|:--------------|
@@ -204,7 +202,7 @@ There is a parameter called `RETHROW_EXCEPTIONS` that you can edit in the `simpl
 
 The default value is __false__, so in case of an error, the `simple_input_parser()` function will gently stop the execution, and it will display the default error messages shipped with __Simple Input Parser__. 
 
-If you want to display your own error messages for the error ceses, you can use _custom validator functions_ and/or you can turn on the `RETHROW_EXCEPTIONS` flag inside the `simple_input_parser.m` file, and catch the exceptions that `simple_input_parser()` function throws to you.
+If you want to display your own error messages for the error cases, you can use _custom validator functions_ and/or you can turn on the `RETHROW_EXCEPTIONS` flag inside the `simple_input_parser.m` file, and catch the exceptions that `simple_input_parser()` function throws to you.
 
 ### Exception format
 
