@@ -36,12 +36,33 @@ function [default_struct_out, extra_flags_out] = simple_input_parser( default_st
 
 % In case of a parsing error, select if you want to terminate your program
 % with an error, or catch an exception on your own.
-RETHROW_EXCEPTIONS = false;
+RETHROW_EXCEPTIONS = true;
 
 % Name that presents on the exception and error message header. There
 % shold be only characters in it. No special characters nor whitespaces.
 MODULE_NAME = 'SimpleInputParser';
 
+%% Handle missing input parameters
+switch nargin
+    case 0
+        % Called with no parameters SimpleInputParser will run in demo mode
+        disp(' ');
+        disp(' Simple Input Parser demo mode.');
+        disp('  Status:   working');
+        disp('  This message was appeared due to no input parameters were passed to the function.');
+        disp('  Have a nice day!');
+        disp('  Best regards,');
+        disp('  Tibor Simon');
+        disp(' ');
+        return;
+    case 1
+        raw_varargin = {};
+        validators = {};
+    case 2
+        % if validators are not passed, set them to empty
+        validators = {};
+end
+    
 %% Global parameters
 default_struct;
 raw_varargin;
@@ -54,40 +75,21 @@ extra_flags_mode   = 0;
 default_struct_out = {};
 extra_flags_out    = {};
 
+%% Handle missing output parameters
+switch nargout
+    case 0
+    case 1
+        extra_flags = 0;
+    case 2
+        for index=1:size(keys)
+            extra_flags.(keys{index}) = 0;
+        end
+        extra_flags_mode = 1;
+end
+
 %% Mode selection and error handling logic
 try
-    % Handle missing parameters
-    switch nargin
-        case 0
-            % Called with no parameters SimpleInputParser will run in demo mode
-            disp(' ');
-            disp(' Simple Input Parser demo mode.');
-            disp('  Status:   working');
-            disp('  This message was appeared due to no input parameters were passed to the function.');
-            disp('  Have a nice day!');
-            disp(' ');
-            return;
-        case 1
-            raw_varargin = {};
-            validators = {};
-        case 2
-            % if validators are not passed, set them to empty
-            validators = {};
-    end
-
-    % Handle output parameters
-    switch nargout
-        case 0
-        case 1
-            extra_flags = 0;
-        case 2
-            for index=1:size(keys)
-                extra_flags.(keys{index}) = 0;
-            end
-            extra_flags_mode = 1;
-    end
-
-    % Mode selection
+    
     switch varlen
         case 1
             throw_exception('invalidParameterLength', 'Invalid input paramter length. At least 2 parameters required: A key and a value.');
