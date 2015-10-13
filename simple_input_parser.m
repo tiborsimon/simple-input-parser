@@ -36,7 +36,7 @@ function [default_struct_out, extra_flags_out] = simple_input_parser( default_st
 
 % In case of a parsing error, select if you want to terminate your program
 % with an error, or catch an exception on your own.
-RETHROW_EXCEPTIONS = true;
+RETHROW_EXCEPTIONS = false;
 
 % Name that presents on the exception and error message header. There
 % shold be only characters in it. No special characters nor whitespaces.
@@ -46,7 +46,6 @@ MODULE_NAME = 'SimpleInputParser';
 default_struct;
 raw_varargin;
 ambiguous_keys     = {}; 
-ambiguous_keys_initial     = {};
 bulk_parsed_keys   = {};
 keys               = fieldnames(default_struct);
 varlen             = length(raw_varargin);
@@ -75,9 +74,6 @@ try
             % if validators are not passed, set them to empty
             validators = {};
     end
-    if nargin > 3
-        throw_exception('API_error_tooMuchParameters', 'To much API input parameters. The max number is 3.');
-    end
 
     % Handle output parameters
     switch nargout
@@ -89,14 +85,12 @@ try
                 extra_flags.(keys{index}) = 0;
             end
             extra_flags_mode = 1;
-        otherwise
-            throw_exception('API_error_tooMuchParameters', 'To much API output parameters. The max number is 2.');
     end
 
     % Mode selection
     switch varlen
         case 1
-            throw_exception('invalidParameterLength', 'Invalid input paramter length. At least 2 parameters required. A key and a value.');
+            throw_exception('invalidParameterLength', 'Invalid input paramter length. At least 2 parameters required: A key and a value.');
         case 2
             parse_bulk_values();
         otherwise
