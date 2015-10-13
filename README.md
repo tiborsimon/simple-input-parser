@@ -5,12 +5,12 @@ Easy to use variable lenght input parser mechanism that provides a convenient an
 The current version sports a _MATLAB_ implementation, but other language ports are coming too.
 
 <a title="Latest version" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
-   <img src="https://img.shields.io/badge/version-v1.4.1-green.svg?style=flat" />
+   <img src="https://img.shields.io/badge/version-v2.4.0-green.svg?style=flat" />
 </a>
-<a title="Goto article" href="http://tiborsimon.io/projects/simple-input-parser/" target="_blank">
+<a title="Goto article" href="http://tiborsimon.io/projects/TSPR0002/" target="_blank">
    <img src="https://img.shields.io/badge/article-read-blue.svg?style=flat" />
 </a>
-<a title="Goto discussion" href="http://tiborsimon.io/projects/simple-input-parser/#discussion" target="_blank">
+<a title="Goto discussion" href="http://tiborsimon.io/projects/TSPR0002/#discussion" target="_blank">
    <img src="https://img.shields.io/badge/discussion-join-orange.svg?style=flat" />
 </a>
 <a title="License" href="#license">
@@ -91,10 +91,7 @@ Let's say you want to write a function with __Simple Input Parser__ that expects
 
 1. You have to use _varargin_ for the parameter list.
 2. You have to create a _parameter structure_ that will contain your parameters and it's default values.
-3. You have to call the `simple_input_parser()` api function with the _parameter structure_ and the _varargin_ parameter.
-
-__Congratulation!__ With this _three_ simple modifications you have implemented _four_ features from the _six_ __Simple Input Parser__ features!
-
+3. You have to call the `simple_input_parser()` api function with the _parameter structure_ and the _varargin_ parameter, and use the previously created _parameter structure_ for the output parameter.
 
 ```
 function ret = my_function(varargin)
@@ -105,252 +102,87 @@ function ret = my_function(varargin)
 
     params = simple_input_parser(params, varargin);
 
-    % further functionalities
+    % further functionalities that uses the params struct
 
 end
 ```
+
+__Congratulation!__ With these _three_ simple modifications you have implemented _four_ features from the _six_ __Simple Input Parser__ features!
 
 To name this four features:
 
 - `my_function()` can accept it's parameters in an arbitrary order
-- it will support the _key-value pair_ mode..
-- ..as well as the _bulk mode_, the mode selection is automatic
-- it will perform an automatic parameter type validation, since you have implicitly defined your parameter's types.
+- It will support the _key-value pair_ mode..
+- ..as well as the _bulk mode_. Mode selection is automatic.
+- It will perform an automatic parameter type validation, since you have implicitly defined your parameter's types.
 
-The `simple_input_parser()` function will return with the modified parameter structure. If the user did not passed the parameter, the default value will be used that you specified earlier.
+The `simple_input_parser()` function will return with the modified parameter structure. If the user did not passed the parameter, the default value will be left in there that you have specified earlier.
 
 
 ## Extra flag mode
 
-## Custom validators
+In some situations it might be useful, if you know, what parameters have your function got. At this point you might think, it can be implemented comparing the values in the parameter struct with it's default values. Well it is a reasonable method, but __Simple Input Parser__ offers an easier one.
 
-## Error handling
-
-There is a parameter called `RETHROW_EXCEPTIONS` that you can edit in the `simple_input_parser.m` file. This variable allows you to control the libary's behavior in case of error. You can select if the library 
-
+You can call the `simple_input_parser()` function with two input parameters. The first one is the output parameter structure and the second one is the __flag structure__. This mode is called _Extra flag mode_. 
 
 ```
-%% Customizable parameters
+function ret = my_function(varargin)
 
-% In case of a parsing error, select if you want to terminate your program
-% with an error, or catch an exception on your own.
-RETHROW_EXCEPTIONS = true;
-
-% Name that presents on the exception and error message header. There
-% shold be only characters in it. No special characters nor whitespaces.
-```
-
-If turn on this feature by setting the 
-
-
-
-
-
-
-
-
-ay you have a function with a lot of parameters. Some of them may be optional. In the old way, your users had to remember exactly how many parameters would your function need and they had to remember the exact order of the parameters as well.
-
-Let's take a sine syntesizer function.
-```
-ssin(440, 2, 45, 48e3, 0.8)
-```
-Is this a user friendly function? I don't think so. This is a __horrible__ function.. Sadly lot of the functions work this way. The user has to look up the definition of the function or the provided help to understand what is happening there.
-
-#### Simple Input Parser way
-
-What if you could provide an on-line help for your users during reading and using your functions?
-
-```
-ssin('f', 440, 'A', 2, 'phi', 45, 'fs', 48e3, 'L', 0.8)
-```
-Much better and readable way to call a function. Everyone knows exactly what is happening. 
-
-But do you really need to force your users to remember your parameter order that is probably inconvenient for them? 
-
-#### Arbitrary order?
-
-How about they can pass the parameters in an arbitrary order as they want?
-
-```
-ssin('A', 2, 'f', 440, 'L', 0.8, 'fs', 48e3, 'phi', 45)
-```
-
-Okay, this function is really user friendly now. 
-
-#### A shorter way?
-
-Do your users like to type a lot of commas and apostrophes? I don't think so. How about this function call?
-
-```
-ssin('A f L fs phi', 2, 440, 0.8, 48e3, 45)
-```
-
-With __Simple Input Parser__ this is still a valid input for a function! 
-
-#### An even shorter way?
-
-Well, there is much less character to type, but I can see repeated spaces between the keys. Do you want to force your users to type spaces if they don't necessary want to? What if they can left the spaces?
-
-```
-ssin('AfLfsphi', 2, 440, 0.8, 48e3, 45)
-```
-
-Yes, this is the most compact form of a function call with __Simple Input Parser__ that produces values. Do you think this is useful for you?
-
-There is an even shorter form that is called _Flag mode_ which receives only the keys and returns a boolean array based on the keys the user passes in.
-
-And here comes the best part:
-
-#### Simple Input Parser supports all its modes simultaneously by calling only one API function inside your function!
-
-
-Don't hesitate to try it out.
-
-# How to use it?
-
-__Simple Input Parser__ does all of the internal parsing based on a predefined parameter array you pass in during the parsing API function call.
-
-Let's say you are going to create a function that takes 3 parameters: a, b and c. Beside your custom functionality you need to
-- pass the parameters in as a single varargin parameter
-- create a parameter array and set the default values
-- pass these two into the `simple_input_parser()` function
-- you are done
-
-``` matlab
-function ret = my_function( varargin )
-
-    params.a = 42;
-    params.b = 'answer';
-    params.c = 55.3;
-
-    params = simple_input_parser(params, varargin);
-
-    % further functionalities
-
-end
-```
-
-By declaring a default data array you have done two things at once: 
-- defining the names of the parameters
-- defining it's type
-
-This is enough information for __Simple Input Parser__ to parse the given input, and during the parsing, executing a simple type checking.
-
-The `simple_input_parser()` API function returns the parameter array with the updated values in it.
-
-#### What has just happened?
-
-Inside the parsing function three things are happening:
-
-- mode selection
-- parsing
-- error checking
-
-Based on the given inputs, __Simple Input Parser__ will determine it's mode of operation and parse the input according to it.
-
-### Offered modes of operations
-
-__Simple Input Parser__ can work in four operation modes. The decision will be made under the hood based on the provided parameters. You only need to _call_ only _one API function_ that will handle the input parsing for you.
-
-#### Key value pair mode
-
-This mode is the longest method to type for your users but it is also the most clearer one. You pass in a key, and then the appropriate value. It's that simple.
-
-```
-ssin('A', 2, 'f', 440, 'L', 0.8, 'fs', 48e3, 'phi', 45)
-```
-
-
-#### Bulk mode
-
-Bulk mode allows your users to pass in the keys at once, and than list the values in the given order. White spaces between the keys are optional. __Simple Input Parse__ can handle the keys without white spaces as well.
-
-```
-ssin('A f L fs phi', 2, 440, 0.8, 48e3, 45)
-ssin('AfLfsphi', 2, 440, 0.8, 48e3, 45)
-```
-
-Aha, you may think that without spaces Simple Input Parser can be confused by passing ambiguous key names in it. Sadly, it can handle them happily :)
-
-```
-my_function('f fs ff2',5,0,3)
-my_function('ffsff2',5,0,3)
-my_function('ff2ffs',3,5,0)
-```
-
-All of these function calls are valid and they will be resulted to the same parameter assignment inside your fuction.
-
-
-
-#### Flag mode
-
-In flag mode you pass only a key-list and no values to your function. You need to create a default parameter array to define the key names, but you need to pass an array that's values are all zeros. This required due to the flag mode will flag the appropriate array elements whit a one value that's key is present in the given input key-list.
-
-``` matlab
-function ret = my_function( varargin )
-
-    flags.a = 0;
-    flags.b = 0;
-    flags.c = 0;
-
-    flags = simple_input_parser(flags, varargin{1});
-    
-    % by passing just the first element of the varargin array we make sure that the 
-    % Simple Input Parser uses the flag mode
-    
-    % further functionalities
-
-end
-```
-
-#### Extra flag mode
-
-You can get a flag structure at any time, if you use a secondary output variable. This secondary output parameter will be assigned the same flag structure, as provided in the Flag mode.
-
-``` matlab
-function ret = my_function( varargin )
-
-    params.a = 0;
+	params.a = 0;
     params.b = 0;
     params.c = 0;
 
-    [params, flags] = simple_input_parser(flags, varargin);
+    [params, flags] = simple_input_parser(params, varargin);
     
-    % if a value was parsed, it's corresponding field in the flags structure will 
-    % be assigned to one unlike the previous flag mode, it is not necessary to 
-    % truncate the varargin parameter to it's firts element the flag generation 
-    % will work during other modes as well
-
-    % further functionalities
-
-end
-```
-
-
-
-
-## Custom validators
-
-There is an optional third argument of the `simple_input_parser()` function which provides a way to pass custom validator functions to __Simple Input Parser__ thats are used for validate your values in a way you want.
-
-For this purpose you have to construct a validator array that has the references for the validator functions you want to use for the keys. You  don't have to define a validator for every key. 
-
-The validator functions have to return a boolean value that determines if the validation was successful or not.
-
-``` matlab
-function ret = my_function( varargin )
-
-    params.a = 0;
-    params.b = 0;
-    params.c = 0;
-    
-    function [validflag, errormsg] = validate_c(value)
-        errormsg = 'Parameter c has to be greater than 1..';
-        validflag = value > 1;
+    if flags.b
+    	disp('b parameter was passed');
     end
 
-    validators.b = @validate_c;
+    % further functionalities
+end
+```
+
+If a value was parsed, it's corresponding field in the flags structure will be assigned to one. It provides you a convenient way to handle custom cases that are depend on the passed parameters.
+
+## Validator functions
+
+__Simple Input Parser__ provides an interface to easily create custom _validator functions_. If the default automatic type based validation isn't enough for you, you can use more specific _validator functions_ for each parameters if you want. For this purpose you have to create a nested validator function with a fix signature: 
+
+```
+function [validflag, errormsg] = my_validator_for_the_parameter_c(value)
+	validflag = value > 1;
+	errormsg = 'Parameter c has to be greater than 1..';
+end
+```
+
+| Input |
+|:-------|
+| _value_ - Parameter value that passed to the function. |
+
+| Output |
+|:-------|
+|_validflag_ - Validation result. It is _true_ if the paramter passed the validation. |
+|_errormsg_ - Message that will be displayed if the validation fails. |
+
+You can use any logic you want to generate the validation result (_validflag_) and the custom error message (_errormsg_) based on the given parameter value (_value_). 
+
+To specify which _validator function_ belongs to which parameter, you need to create a structure with fields identical to the parameters you want to validate, assigning a pointer pointing to the _validator function_. __Simple Input Parser__ will call this _validator function_ with the parameter's value if it parses the specified parameter, and based on the returned value (_validflag_) it will throw an error with the specified error message (_errormsg_).
+
+The custom validation is optional, so you don't need to specify a _validator function_ for each parameters. If a parameter doesn't has a _validator function_ the default automatic type based validation will be used for that parameter.
+
+```
+function ret = my_function(varargin)
+
+    params.a = 0;
+    params.b = 0;
+    params.c = 0;
+
+    function [validflag, errormsg] = my_validator_for_the_parameter_c(value)
+		validflag = value > 1;
+		errormsg = 'Parameter c has to be greater than 1..';
+	end
+
+    validators.c = @validate_c;
 
     params = simple_input_parser(params, varargin, validators);
 
@@ -359,16 +191,36 @@ function ret = my_function( varargin )
 end
 ```
 
-By calling the function with `my_function('abc',1,0,3)`, Simple Input Parser will provide the following error message:
+You can use one _validator function_ for more than one parameters, but keep in mind that you will get only a value without any information for the parameter name.
 
-```
-SimpleInputParser:validationError - Invalid value was found for the key "b" according 
-to the given validator function:      0
+## Error handling
 
- Parameter c has to be greater than 1..
-```
+There is a parameter called `RETHROW_EXCEPTIONS` that you can edit in the `simple_input_parser.m` file. This variable allows you to control the libary's behavior in case of error. __Simple Input Parser__ has two error handling modes:
 
-In this way you can provide your customers a detailed error message.
+|`RETHROW_EXCEPTIONS` | In case of an error `simple_input_parser()`.. |
+|:-------------|:--------------|
+|_true_ | will throw an exception. |
+|__false__ | will stop the execution and print out the error. |
+
+The default value is __false__, so in case of an error, the `simple_input_parser()` function will gently stop the execution, and it will display the default error messages shipped with __Simple Input Parser__. 
+
+If you want to display your own error messages for the error ceses, you can use _custom validator functions_ and/or you can turn on the `RETHROW_EXCEPTIONS` flag inside the `simple_input_parser.m` file, and catch the exceptions that `simple_input_parser()` function throws to you.
+
+### Exception format
+
+Since MATLAB's exception system uses exception identifiers instead of exception classes and subclasses, __Simple Input Parser__ uses the following exception format for the exception identifier:
+
+_component:mnemonic_ = `SimpleInputParser:exceptionId`
+
+|exceptionId | Error case |
+|:-------------|:--------------|
+|_invalidParameterLength_ | There were less than 2 or there were more than enough parameters passed to the function. |
+|_invalidKey_ | The parsed key is invalid since no matching parameter was found. |
+|_redundantKey_ | A key passed two times. |
+|_unusedValue_ | There were more values than keys specified. |
+|_typeError_ | A parsed value didn't passed the automatic type based validation. |
+|_validationError_ | A parsed value didn't passed the corresponding custom validatior function. | 
+
 
 ## Contribution
 
@@ -376,25 +228,24 @@ If you want to contribute to this project you have to make sure, that your contr
 
 If a pull request fails any of the tests, the request will be automatically invalidated.
 
-The current _MATLAB_ port contains 35 tests:
+The current _MATLAB_ port contains 33 tests:
 
 ```
 Running SimpleInputParserTests
 ..........
 ..........
 ..........
-.....
+...
 Done SimpleInputParserTests
 __________
 
                  result              
     _________________________________
 
-    [1x35 matlab.unittest.TestResult]
+    [1x33 matlab.unittest.TestResult]
 ```
 
 ## License
 
 This project is under the __MIT license__. 
 See the included license file for further details.
-
