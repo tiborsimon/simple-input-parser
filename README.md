@@ -2,18 +2,10 @@
 
 Easy to use variable lenght input parser mechanism that provides a convenient and advanced way to enchance your custom function parameter handling.
 
-<a title="Latest version" href="https://github.com/tiborsimon/simple-input-parser/releases/latest" target="_blank">
-   <img src="https://img.shields.io/badge/version-v2.0.0-green.svg?style=flat" />
-</a>
-<a title="Goto article" href="http://tiborsimon.io/projects/TSPR0002/" target="_blank">
-   <img src="https://img.shields.io/badge/article-read-blue.svg?style=flat" />
-</a>
-<a title="Goto discussion" href="http://tiborsimon.io/projects/TSPR0002/#discussion" target="_blank">
-   <img src="https://img.shields.io/badge/discussion-join-orange.svg?style=flat" />
-</a>
-<a title="License" href="#license">
-   <img src="http://img.shields.io/badge/license-MIT-green.svg?style=flat" />
-</a>
+[![Gitter](https://img.shields.io/gitter/room/tiborsimon/simple-input-parser.svg?maxAge=2592000)](https://gitter.im/tiborsimon/simple-input-parser?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![GitHub release](https://img.shields.io/github/release/tiborsimon/simple-input-parser.svg?maxAge=2592000)](https://github.com/tiborsimon/simple-input-parser/releases/latest)
+[![license](https://img.shields.io/github/license/tiborsimon/simple-input-parser.svg?maxAge=2592000)](https://github.com/tiborsimon/simple-input-parser#license)
+[![Github All Releases](https://img.shields.io/github/downloads/tiborsimon/simple-input-parser/total.svg?maxAge=2592000)](https://github.com/tiborsimon/simple-input-parser/releases/latest)
 
 ## Documentation v2.0.0
 
