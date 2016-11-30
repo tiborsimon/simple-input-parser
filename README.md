@@ -111,14 +111,14 @@ The `simple_input_parser()` function will return with the modified parameter str
 
 ## Extra flag mode
 
-In some situations it might be useful, if you know, what parameters have your function got. At this point you might think, it can be implemented comparing the values in the parameter struct with its default values. Well, it is a reasonable method, but __Simple Input Parser__ offers an easier one.
+In some situations it might be useful to know, what parameters were passed to your function. Of course, you can compare the returned structure to the one with the default values, but __Simple Input Parser__ offers an easier one.
 
 You can call the `simple_input_parser()` function with two input parameters. The first one is the output parameter structure and the second one is the __flag structure__. This mode is called _Extra flag mode_. 
 
 ```
 function ret = my_function(varargin)
 
-	params.a = 0;
+    params.a = 0;
     params.b = 0;
     params.c = 0;
 
